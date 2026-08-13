@@ -1,0 +1,89 @@
+@import "tailwindcss";
+
+/* ────────────────────────────────────────────────────────────
+   CRONOS — sistema visual
+   Paleta integralmente fria. Nenhum tom quente, nenhum ouro.
+   ──────────────────────────────────────────────────────────── */
+
+@theme {
+  --color-bone: #f2f0eb;
+  --color-fog: #e4e1da;
+  --color-brushed: #b8bcc0;
+  --color-steel: #8a8d91;
+  --color-slate: #4a4e54;
+  --color-graphite: #16171a;
+
+  --font-display: var(--font-playfair), Georgia, serif;
+  --font-body: var(--font-inter), system-ui, sans-serif;
+  --font-data: var(--font-jetbrains), ui-monospace, monospace;
+
+  /* O batimento do escape. Nada nesta marca desliza suavemente. */
+  --ease-tick: cubic-bezier(0.16, 1.36, 0.32, 1);
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    background-color: var(--color-bone);
+    color: var(--color-graphite);
+    font-family: var(--font-body);
+    font-weight: 400;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  ::selection {
+    background-color: var(--color-graphite);
+    color: var(--color-bone);
+  }
+}
+
+@layer components {
+  /* Legenda de instrumento: mono, caixa alta, tracking largo. */
+  .eyebrow {
+    font-family: var(--font-data);
+    font-size: 0.6875rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--color-steel);
+  }
+
+  /* O fio Brushed de 1px — o ponteiro em repouso. */
+  .rule {
+    height: 1px;
+    background-color: var(--color-brushed);
+    opacity: 0.5;
+  }
+}
+
+/* Reveals entram por aqui e são liberados pelo GSAP.
+   Sem JS (ou com JS falhando) o conteúdo permanece visível. */
+.reveal {
+  opacity: 0;
+}
+
+.no-js .reveal,
+.reveal.is-in {
+  opacity: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  .reveal {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
