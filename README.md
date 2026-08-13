@@ -153,6 +153,36 @@ converter. O `image_to_3d` custa **20 créditos por peça sem textura, 30 com** 
 ou seja, 120 a 180 pela pilha inteira. Foi por isso que a rota do GLB ficou
 para depois.
 
+## Deploy — Cloudflare Pages
+
+O site não tem nada de servidor: nenhum server action, nenhuma API route,
+nenhum middleware, nenhum ISR. O formulário de reserva confirma na tela e
+para por aí. Por isso o `next.config.ts` sai em `output: "export"` e o
+artefato é um `out/` de arquivos soltos — 88 arquivos, 45 MB.
+
+| campo (painel do Pages)  | valor           |
+| ------------------------ | --------------- |
+| Build command            | `npm run build` |
+| Build output directory   | `out`           |
+
+O diretório de saída também está no `wrangler.jsonc`
+(`pages_build_output_dir`), e o que está lá **vence o painel**. O comando de
+build, não: esse o Pages só lê da interface.
+
+E ele precisa ser preenchido à mão. Deixando o campo vazio, o Cloudflare
+detecta "Next.js" e assume `npx @cloudflare/next-on-pages` — o adaptador de
+SSR em Workers. Fora de ser a ferramenta errada para um site estático, ela
+falha na própria instalação: os peer deps dela pedem `@cloudflare/workers-types`
+v4 e o wrangler atual traz a v5, e o `npm` aborta com `ERESOLVE`. O build
+morre antes de chegar ao Next.
+
+Publicar do terminal, sem passar pelo build do Pages:
+
+```bash
+npm run build
+npx wrangler pages deploy out --project-name=cronos-6gb
+```
+
 ## Guarda-corpo
 
 - Nenhum tom quente ou dourado — quebra o posicionamento inteiro. O Brushed

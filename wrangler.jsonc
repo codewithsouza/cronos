@@ -1,0 +1,20 @@
+{
+  // Projeto do Cloudflare Pages. O nome tem de bater com o do painel — foi o
+  // Cloudflare que gerou o sufixo, não nós.
+  "name": "cronos-6gb",
+  "compatibility_date": "2026-08-13",
+
+  // O que é publicado: o export estático do Next (`npm run build` → `out/`).
+  //
+  // Estar aqui, e não só no painel, é o ponto: o Pages lê este campo do
+  // repositório e ignora o do painel. O diretório de saída deixa de ser uma
+  // configuração que alguém pode errar na interface, e passa a viajar junto
+  // com o código que a produz.
+  //
+  // O *comando* de build continua sendo do painel — o Pages não o lê daqui.
+  // Ele precisa ser `npm run build`. Se ficar vazio, o Cloudflare detecta
+  // Next.js sozinho e chama `npx @cloudflare/next-on-pages`, que é o caminho
+  // de SSR em Workers: este site não tem nada de servidor, e essa ferramenta
+  // quebra sozinha na instalação (conflito de peer deps dela própria).
+  "pages_build_output_dir": "out"
+}
